@@ -17,7 +17,7 @@ public class CustomObjectMapperProvider implements ContextResolver<ObjectMapper>
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     static {
-        objectMapper.registerModule(new CustomModule());
+        objectMapper.registerModules(new CustomModule());
     }
 
     @Override

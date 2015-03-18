@@ -23,7 +23,7 @@ public class ObjectMapperBean extends ObjectMapper {
         // Register CustomModule, resolves setHierarchy vs sethierarchy issue with HierarchySpecificMaster class
         // objectMapper.registerModule(new CustomModule());
         disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        registerModule(new CustomModule());
+        registerModules(new CustomModule());
     }
 
 }

@@ -25,6 +25,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.demo.poc.common.FlatBeanWrapper;
 import org.demo.poc.common.ResponseBeanWrapper;
 import org.demo.poc.common.ResponseWrapper;
+import org.demo.poc.doc.price.SamplePriceData;
 
 /**
  * @author pbhave
@@ -75,6 +76,30 @@ public class Api extends ParentApiBean implements Serializable {
     }
 
     @GET
+    @Path("/staticPrice")
+    public Response getStaticPrice() {
+
+        List<ResponseBeanWrapper> priceList = new ArrayList<>();
+
+        try {
+
+            super.setContent(SamplePriceData.priceData);
+
+            ResponseWrapper[] priceWrapper = (ResponseWrapper[]) getObjectMapper()
+                    .readValue(super.getContent(), ResponseWrapper[].class);
+
+            priceList = getPriceDao().getPriceList(priceList, priceWrapper);
+
+            return responseBuilder(Status.OK, priceList);
+
+        } catch (Exception e) {
+            LOG.info(e.getMessage());
+        }
+        return responseBuilder(Status.NOT_FOUND, "Possible issues with api");
+
+    }
+
+    @GET
     @Path("/offer")
     public Response getOffer(@QueryParam("id") String id) {
 
@@ -100,7 +125,7 @@ public class Api extends ParentApiBean implements Serializable {
         } catch (IOException e) {
             LOG.info(e.getMessage());
         }
-        return responseBuilder(Status.NOT_FOUND, "Possible issues with api");
+        return responseBuilder(Status.NOT_FOUND, "Possible issues while reading static data");
 
     }
 
